@@ -11,20 +11,16 @@ import {
 } from "@/lib/actions/general.action";
 
 async function Home() {
- const user = await getCurrentUser();
+  const user = await getCurrentUser();
 
-let userInterviews = [];
-let allInterview = [];
-
-if (user?.id) {
-  [userInterviews, allInterview] = await Promise.all([
-    getInterviewsByUserId(user.id),
-    getLatestInterviews({ userId: user.id }),
+  const [userInterviews, allInterview] = await Promise.all([
+    getInterviewsByUserId(user?.id!),
+    getLatestInterviews({ userId: user?.id! }),
   ]);
-}
 
-const hasPastInterviews = userInterviews.length > 0;
-const hasUpcomingInterviews = allInterview.length > 0;
+  const hasPastInterviews = userInterviews?.length! > 0;
+  const hasUpcomingInterviews = allInterview?.length! > 0;
+
   return (
     <>
       <section className="card-cta">
@@ -56,7 +52,7 @@ const hasUpcomingInterviews = allInterview.length > 0;
             userInterviews?.map((interview) => (
               <InterviewCard
                 key={interview.id}
-                userId={user?.id ?? " "}
+                userId={user?.id}
                 interviewId={interview.id}
                 role={interview.role}
                 type={interview.type}
