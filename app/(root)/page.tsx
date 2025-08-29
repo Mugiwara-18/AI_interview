@@ -11,10 +11,10 @@ import {
 } from "@/lib/actions/general.action";
 
 async function Home() {
-  const user = await getCurrentUser();
+ const user = await getCurrentUser();
 
-let userInterviews: any[] = [];
-let allInterview: any[] = [];
+let userInterviews = [];
+let allInterview = [];
 
 if (user?.id) {
   [userInterviews, allInterview] = await Promise.all([
