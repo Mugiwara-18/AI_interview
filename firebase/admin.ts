@@ -1,4 +1,6 @@
 import { initializeApp, getApps, cert } from "firebase-admin/app";
+const db = getFirestore();
+db.settings({ ignoreUndefinedProperties: true });
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
@@ -17,10 +19,15 @@ function initFirebaseAdmin() {
     });
   }
 
+  if (!process.env.FIREBASE_PROJECT_ID || !process.env.FIREBASE_CLIENT_EMAIL || !process.env.FIREBASE_PRIVATE_KEY) {
+  throw new Error("Missing Firebase Admin environment variables");
+}
+
   return {
     auth: getAuth(),
     db: getFirestore(),
   };
 }
 
-export const { auth, db } = initFirebaseAdmin();
+export const firebaseAdminApp = initFirebaseAdmin();
+export const { auth, db } = firebaseAdminApp;
