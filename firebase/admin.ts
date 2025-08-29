@@ -11,7 +11,6 @@ function initFirebaseAdmin() {
       credential: cert({
         projectId: process.env.FIREBASE_PROJECT_ID,
         clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-        // Replace newlines in the private key
         privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
       }),
     });
@@ -28,7 +27,7 @@ function initFirebaseAdmin() {
   const auth = getAuth();
   const db = getFirestore();
 
-  // ✅ Apply ignoreUndefinedProperties on the actual db you export
+  // ✅ Apply ignoreUndefinedProperties on the exported instance
   db.settings({ ignoreUndefinedProperties: true });
 
   return { auth, db };
