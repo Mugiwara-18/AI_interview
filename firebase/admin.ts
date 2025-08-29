@@ -11,29 +11,16 @@ function initFirebaseAdmin() {
       credential: cert({
         projectId: process.env.FIREBASE_PROJECT_ID,
         clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        // Replace newlines in the private key
         privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
       }),
     });
   }
 
-  if (
-    !process.env.FIREBASE_PROJECT_ID ||
-    !process.env.FIREBASE_CLIENT_EMAIL ||
-    !process.env.FIREBASE_PRIVATE_KEY
-  ) {
-    throw new Error("Missing Firebase Admin environment variables");
-  }
-
-  const auth = getAuth();
-  const db = getFirestore();
-
-  // ✅ Apply ignoreUndefinedProperties on the exported instance
-  db.settings({ ignoreUndefinedProperties: true });
-
-  return { auth, db };
+  return {
+    auth: getAuth(),
+    db: getFirestore(),
+  };
 }
 
-const firebaseAdminApp = initFirebaseAdmin();
-
-export const auth = firebaseAdminApp.auth;
-export const db = firebaseAdminApp.db;
+export const { auth, db } = initFirebaseAdmin();
